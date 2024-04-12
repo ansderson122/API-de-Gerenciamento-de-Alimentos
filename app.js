@@ -52,6 +52,21 @@ app.post('/api/foods',async (req, res) => {
     })
 });
 
+// Rota para busca comidas pela id 
+app.get('/api/foods/:id',async (req, res) => {
+    const id = req.params.id;
+
+    await Food.findById(id)
+    .then(comidas => {
+        res.json(comidas)
+    }).catch( error =>{
+        res.json('Error do servido');
+        console.log(error)
+    })
+});
+
+
+
 
 
 
