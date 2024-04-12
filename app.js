@@ -22,6 +22,38 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, '/Capas')));
 
 
+// Rota para acessar tadas as comidas 
+app.get('/api/foods',async (req, res) => {
+    await Food.find()
+    .then(comidas => {
+        res.json(comidas)
+    }).catch( error =>{
+        res.json('Error do servido');
+        console.log(error)
+    })
+});
+
+// Rota para criar comida 
+app.post('/api/foods',async (req, res) => {
+    const comidas =new Food({
+        name: req.body.name,
+        category: req.body.category,
+        quantity:  req.body.quantity,
+        expirationDate:req.body.expirationDate,
+        price:req.body.price
+    })
+
+    await comidas.save()
+    .then(comidas => {
+        res.json(comidas)
+    }).catch( error =>{
+        res.json('Error do servido');
+        console.log(error)
+    })
+});
+
+
+
 
 
 
