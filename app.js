@@ -58,7 +58,10 @@ app.get('/api/foods/:id',async (req, res) => {
 
     await Food.findById(id)
     .then(comidas => {
-        res.json(comidas)
+        if (!comidas) {
+            return res.status(404).json({ error: 'Alimento não encontrado' });
+          }
+          res.json(comidas);
     }).catch( error =>{
         res.json('Error do servido');
         console.log(error)
@@ -66,7 +69,7 @@ app.get('/api/foods/:id',async (req, res) => {
 });
 
 
-// Rota para busca comidas pela id 
+// Rota para Atualizar um alimento existente 
 app.put('/api/foods/:id',async (req, res) => {
     const id = req.params.id;
     const comidas ={
@@ -80,10 +83,30 @@ app.put('/api/foods/:id',async (req, res) => {
 
     await Food.findByIdAndUpdate(id, comidas, { new: true })
     .then(comidas => {
-        res.json(comidas)
+        if (!comidas) {
+            return res.status(404).json({ error: 'Alimento não encontrado' });
+          }
+        res.json(comidas);
     }).catch( error =>{
         res.json('Error do servido');
         console.log(error)
+    })
+});
+
+// Rota para Excluir um alimento 
+app.delete('/api/foods/:id',async (req, res) => {
+    const id = req.params.id;
+
+    await Food.findByIdAndDelete(id)
+    .then(comidas => {
+        if (!comidas) {
+            return res.status(404).json({ error: 'Comida não encontrada' });
+          }
+        res.json({ message: 'Comida excluída com sucesso' });
+
+    }).catch( error =>{
+        console.error('Erro ao excluir comida por ID:', error.message);
+        res.status(500).json({ error: 'Erro interno do servidor' });
     })
 });
 
