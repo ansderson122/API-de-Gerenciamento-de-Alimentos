@@ -9,12 +9,14 @@ const bodyParser = require('body-parser');
 
 const mongoose = require('mongoose');
 const Food = require('./model/foodSchema');
+require('dotenv').config();
 
-
-const dbURI = 'mongodb+srv://usuario:alh84001@cluster0.i9u9cjb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
-mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('Conectado com sucesso ao MongoDB'))
-  .catch(err => console.log(err));
+mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}`, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => console.log('Conexão com o banco de dados estabelecida com sucesso'))
+.catch(err => console.error('Erro ao conectar ao banco de dados:', err));
 
 
 app.use(bodyParser.json());
